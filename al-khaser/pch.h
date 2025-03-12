@@ -134,6 +134,7 @@
 
 /* Anti-Analysis */
 #include "AntiAnalysis/process.h"
+#include "AntiAnalysis/hostingCheck.h"
 
 /* Anti-Disassembly */
 #include "AntiDisassm/AntiDisassm.h"
