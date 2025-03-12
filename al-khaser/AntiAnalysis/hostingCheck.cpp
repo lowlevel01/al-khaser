@@ -1,15 +1,12 @@
-#include <iostream>
-#include <string>
 #include <winsock2.h>
 #include <ws2tcpip.h>
-
-/* A technique found in a malware sample. 
-	it checks if the machine is hosted on Cloud which it suspects to be a sandbox.
-*/
+#include <iostream>
+#include <string>
+#include "hostingCheck.hpp"
 
 #pragma comment(lib, "ws2_32.lib")
 
-int main() {
+int hosting_check() {
 
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -90,5 +87,5 @@ int main() {
     closesocket(sock);
     WSACleanup();
 
-    return 0;
+
 }
