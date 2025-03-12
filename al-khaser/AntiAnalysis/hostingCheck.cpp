@@ -3,6 +3,9 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
+/* A technique found in a malware sample. 
+	it checks if the machine is hosted on Cloud which it suspects to be a sandbox.
+*/
 
 #pragma comment(lib, "ws2_32.lib")
 
