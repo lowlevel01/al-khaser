@@ -2,7 +2,10 @@
 #include <ws2tcpip.h>
 #include <iostream>
 #include <string>
-#include "hostingCheck.hpp"
+#include "hostingCheck.h"
+#pragma once
+#include "pch.h"
+
 
 #pragma comment(lib, "ws2_32.lib")
 
