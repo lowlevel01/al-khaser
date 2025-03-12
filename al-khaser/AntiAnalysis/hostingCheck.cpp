@@ -79,10 +79,7 @@ int hosting_check() {
     }
     else {
         if (response.find("true") != std::string::npos ){
-            std::cout << "Sandbox Detected" << std::endl;
-        }
-        else {
-            std::cout << "Safe" << std::endl;
+            std::cout << "Sandbox Detected: Machine hosted on Cloud." << std::endl;
         }
     }
 	
