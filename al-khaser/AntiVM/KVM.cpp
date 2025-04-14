@@ -15,6 +15,7 @@ VOID kvm_reg_keys()
 		_T("SYSTEM\\ControlSet001\\Services\\BALLOON"),
 		_T("SYSTEM\\ControlSet001\\Services\\BalloonService"),
 		_T("SYSTEM\\ControlSet001\\Services\\netkvm"),
+		_T("SYSTEM\\CurrentControlSet\\Enum\\PCI\\VEN_1AF4*"),
 	};
 
 	WORD dwlength = sizeof(szKeys) / sizeof(szKeys[0]);

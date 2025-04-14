@@ -32,6 +32,7 @@ VOID virtual_pc_reg_keys()
 	/* Array of strings of blacklisted registry keys */
 	const TCHAR* szKeys[] = {
 		_T("SOFTWARE\\Microsoft\\Virtual Machine\\Guest\\Parameters"),
+		_T("SYSTEM\\CurrentControlSet\\Enum\\PCI\\VEN_5333*"),
 	};
 
 	WORD dwlength = sizeof(szKeys) / sizeof(szKeys[0]);

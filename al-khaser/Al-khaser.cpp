@@ -170,6 +170,7 @@ int main(int argc, char* argv[])
 		known_usernames();
 		known_hostnames();
 		other_known_sandbox_environment_checks();
+		looking_glass_vdd_processes();
 		exec_check(&NumberOfProcessors, TEXT("Checking Number of processors in machine "));
 		exec_check(&idt_trick, TEXT("Checking Interupt Descriptor Table location "));
 		exec_check(&ldt_trick, TEXT("Checking Local Descriptor Table location "));
@@ -267,6 +268,7 @@ int main(int argc, char* argv[])
 	if (ENABLE_QEMU_CHECKS) {
 		print_category(TEXT("QEMU Detection"));
 		qemu_reg_key_value();
+		qemu_reg_keys();
 		qemu_processes();
 		qemu_dir();
 		exec_check(&qemu_firmware_SMBIOS, TEXT("Checking SMBIOS firmware  "));
@@ -277,13 +279,14 @@ int main(int argc, char* argv[])
 	/* Xen Detection */
 	if (ENABLE_XEN_CHECKS) {
 		print_category(TEXT("Xen Detection"));
+		xen_reg_keys();
 		xen_process();
 		exec_check(&xen_check_mac, TEXT("Checking Mac Address start with 08:16:3E "));
 	}
 
 	/* KVM Detection */
 	if (ENABLE_KVM_CHECKS) {
-		print_category(TEXT("Xen Detection"));
+		print_category(TEXT("KVM Detection"));
 		kvm_files();
 		kvm_reg_keys();
 		exec_check(&kvm_dir, TEXT("Checking KVM virio directory "));
@@ -296,9 +299,10 @@ int main(int argc, char* argv[])
 		wine_reg_keys();
 	}
 
-	/* Paralles Detection */
+	/* Parallels Detection */
 	if (ENABLE_PARALLELS_CHECKS) {
-		print_category(TEXT("Paralles Detection"));
+		print_category(TEXT("Parallels Detection"));
+		parallels_reg_keys();
 		parallels_process();
 		exec_check(&parallels_check_mac, TEXT("Checking Mac Address start with 00:1C:42 "));
 	}

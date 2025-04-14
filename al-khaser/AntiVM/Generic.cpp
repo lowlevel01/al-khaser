@@ -2175,3 +2175,34 @@ cleanup:
 	WSACleanup();
 	return retVal;
 }
+
+/*
+Check for looking-glass-host & VDD processes list.exe
+https://looking-glass.io (Used in Hypervisor Phantom)
+https://github.com/Scrut1ny/Hypervisor-Phantom
+
+Looking-glass requires at least one of them:
+1. Physical monitor (undetectable)
+2. HDMI emulator stub (undetectable?)
+3. VirtualDisplayDriver (https://github.com/VirtualDrivers/Virtual-Display-Driver)
+*/
+VOID looking_glass_vdd_processes()
+{
+	const TCHAR *szProcesses[] = {
+		_T("looking-glass-host.exe"), 	// Looking-Glass.io
+		_T("VDDSysTray.exe"),			// VirtualDisplayDriver, used in conjunction
+	};
+
+	WORD iLength = sizeof(szProcesses) / sizeof(szProcesses[0]);
+
+	for (int i = 0; i < iLength; i++)
+	{
+		TCHAR msg[256] = _T("");
+		_stprintf_s(msg, sizeof(msg) / sizeof(TCHAR), _T("Checking processes %s "), szProcesses[i]);
+
+		if (GetProcessIdFromName(szProcesses[i]))
+			print_results(TRUE, msg);
+		else
+			print_results(FALSE, msg);
+	}
+}

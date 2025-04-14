@@ -242,6 +242,8 @@ Please, if you encounter any of the anti-analysis tricks which you have seen in 
   - prl_tools.exe(Parallels)
   - xenservice.exe(Citrix Xen)
   - qemu-ga.exe (QEMU)
+  - looking-glass-host.exe (GENERIC)
+  - VDDSysTray.exe (GENERIC)
 - **WMI**
   - SELECT * FROM Win32_Bios (SerialNumber) (GENERIC)
   - SELECT * FROM Win32_PnPEntity (DeviceId) (VBOX)

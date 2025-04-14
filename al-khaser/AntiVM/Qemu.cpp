@@ -28,6 +28,30 @@ VOID qemu_reg_key_value()
 }
 
 
+/*
+Check against QEMU registry keys
+*/
+VOID qemu_reg_keys()
+{
+	/* Array of strings of blacklisted registry keys */
+	const TCHAR* szKeys[] = {
+		_T("SYSTEM\\CurrentControlSet\\Enum\\PCI\\VEN_1B36*"),
+	};
+
+	WORD dwlength = sizeof(szKeys) / sizeof(szKeys[0]);
+
+	/* Check one by one */
+	for (int i = 0; i < dwlength; i++)
+	{
+		TCHAR msg[256] = _T("");
+		_stprintf_s(msg, sizeof(msg) / sizeof(TCHAR), _T("Checking reg key %s "), szKeys[i]);
+
+		if (Is_RegKeyExists(HKEY_LOCAL_MACHINE, szKeys[i]))
+			print_results(TRUE, msg);
+		else
+			print_results(FALSE, msg);
+	}
+}
 
 /*
 Check for process list

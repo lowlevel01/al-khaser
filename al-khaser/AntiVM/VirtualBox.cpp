@@ -44,7 +44,8 @@ VOID vbox_reg_keys()
 		_T("SYSTEM\\ControlSet001\\Services\\VBoxMouse"),
 		_T("SYSTEM\\ControlSet001\\Services\\VBoxService"),
 		_T("SYSTEM\\ControlSet001\\Services\\VBoxSF"),
-		_T("SYSTEM\\ControlSet001\\Services\\VBoxVideo")
+		_T("SYSTEM\\ControlSet001\\Services\\VBoxVideo"),
+		_T("SYSTEM\\CurrentControlSet\\Enum\\PCI\\VEN_5333*"),
 	};
 
 	WORD dwlength = sizeof(szKeys) / sizeof(szKeys[0]);

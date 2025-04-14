@@ -39,6 +39,7 @@ VOID vmware_reg_keys()
 	/* Array of strings of blacklisted registry keys */
 	const TCHAR* szKeys[] = {
 		_T("SOFTWARE\\VMware, Inc.\\VMware Tools"),
+		_T("SYSTEM\\CurrentControlSet\\Enum\\PCI\\VEN_15AD*"),
 	};
 
 	WORD dwlength = sizeof(szKeys) / sizeof(szKeys[0]);
