@@ -50,6 +50,6 @@ BOOL pirated_windows();
 BOOL registry_services_disk_enum();
 BOOL registry_disk_enum();
 BOOL number_SMBIOS_tables();
-BOOL firmware_ACPI_WAET();
+BOOL firmware_ACPI();
 BOOL hosting_check();
 VOID looking_glass_vdd_processes();

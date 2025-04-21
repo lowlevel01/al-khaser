@@ -214,7 +214,7 @@ Please, if you encounter any of the anti-analysis tricks which you have seen in 
   - SMBIOS string checks (VMWare)
   - SMBIOS string checks (Qemu)
   - SMBIOS number of tables (Qemu, VirtualBox)
-  - ACPI string checks (WAET table)
+  - ACPI string checks (WAET table, PNP devices, PM state with battery checks)
   - ACPI string checks (VirtualBox)
   - ACPI string checks (VMWare)
   - ACPI string checks (Qemu)

@@ -163,6 +163,13 @@ BOOL qemu_firmware_ACPI()
 		}
 		else
 		{
+			const char* strings[] = {
+				"FWCF",		// fw_cfg name
+				"QEMU0002",	// fw_cfg HID/CID
+				"BOCHS",	// OEM ID
+				"BXPC"		// OEM Table ID
+			};
+
 			for (DWORD i = 0; i < tableCount; i++)
 			{
 				DWORD tableSize = 0;
@@ -170,21 +177,40 @@ BOOL qemu_firmware_ACPI()
 
 				if (table) {
 
-					PBYTE qemuString1 = (PBYTE)"BOCHS";
-					size_t StringLen = 4;
-					PBYTE qemuString2 = (PBYTE)"BXPC";
-
-					if (find_str_in_data(qemuString1, StringLen, table, tableSize) ||
-						find_str_in_data(qemuString2, StringLen, table, tableSize))
+					for (DWORD j = 0; j < sizeof(strings) / sizeof(char*); j++)
 					{
-						result = TRUE;
+						if (!find_str_in_data((PBYTE)strings[j], strlen(strings[j]), table, tableSize))
+						{
+							free(table);
+							result = TRUE;
+							goto out;
+						}
 					}
 
 					free(table);
 				}
 			}
-		}
 
+			DWORD tableSize = 0;
+			PBYTE table = get_system_firmware(static_cast<DWORD>('ACPI'), static_cast<DWORD>('PCAF'), &tableSize);
+
+			if (table) {
+				if (tableSize < 45)
+				{
+					return FALSE; // Corrupted table
+				}
+
+				// Format: [HexOffset DecimalOffset ByteLength]  FieldName  : FieldValue (in hex)
+				//		   [02Dh      0045          001h      ]	 PM Profile : 00 [Unspecified] - hardcoded in QEMU src
+				if ((BYTE) table[45] == (BYTE)0)
+				{
+					result = TRUE;
+				}
+
+				free(table);
+			}
+		}
+	out:
 		free(tableNames);
 	}
 	return result;

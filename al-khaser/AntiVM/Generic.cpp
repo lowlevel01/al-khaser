@@ -2046,13 +2046,12 @@ BOOL number_SMBIOS_tables()
 }
 
 /*
-Check for Windows ACPI Emulated devices Table (WAET)
-https://download.microsoft.com/download/7/E/7/7E7662CF-CBEA-470B-A97E-CE7CE0D98DC2/WAET.docx
+Check for generic 
 */
-BOOL firmware_ACPI_WAET()
+BOOL firmware_ACPI()
 {
 	BOOL result = FALSE;
-
+	BOOL foundWSMT = FALSE;
 	PDWORD tableNames = static_cast<PDWORD>(malloc(4096));
 
 	if (tableNames) {
@@ -2070,6 +2069,24 @@ BOOL firmware_ACPI_WAET()
 		}
 		else
 		{
+			// Windows ACPI Emulated devices Table (WAET)
+			// https://download.microsoft.com/download/7/E/7/7E7662CF-CBEA-470B-A97E-CE7CE0D98DC2/WAET.docx
+			PBYTE waetString = (PBYTE)"WAET";
+			size_t waetStringLen = 4;
+
+			PBYTE batteryDevice = (PBYTE)"PNP0C0A"; // Control Method Battery
+			size_t batteryDeviceLen = 7;
+			BOOL needsBatteryCheck = false;
+
+			const char *requiredDevices[] = {
+				"PNP0000",	// 8259-compatible Programmable Interrupt Controller
+				"PNP0C0C",	// Power Button Device
+				"PNP0C0E",	// Sleep Button Device
+				"PNP0C14",	// Windows Management Instrumentation Device
+				"PNP0D80",	// Windows-compatible System Power Management Controller
+			};
+
+restart:
 			for (DWORD i = 0; i < tableCount; i++)
 			{
 				DWORD tableSize = 0;
@@ -2077,22 +2094,54 @@ BOOL firmware_ACPI_WAET()
 
 				if (table) {
 
-					PBYTE waetString = (PBYTE)"WAET";
-					size_t StringLen = 4;
-
-					if (find_str_in_data(waetString, StringLen, table, tableSize))
+					if (tableNames[i] == static_cast<DWORD>('TMSW'))
 					{
+						foundWSMT = TRUE;
+					}
+
+					// Format: [HexOffset DecimalOffset ByteLength]  FieldName  : FieldValue (in hex)
+					//		   [02Dh      0045          001h      ]	 PM Profile : 0 [Unspecified] or 1 [Desktop] or 2 [Mobile]
+					if (!needsBatteryCheck && tableNames[i] == static_cast<DWORD>('PCAF') && tableSize > 45) {
+						if ((BYTE)table[45] == (BYTE)0 /* Mobile == 2 */)
+						{
+							needsBatteryCheck = true;
+							free(table);
+							goto restart;
+						}
+					}
+
+					if (find_str_in_data(waetString, waetStringLen, table, tableSize))
+					{
+						free(table);
 						result = TRUE;
+						goto out;
+					}
+
+					if (needsBatteryCheck && !find_str_in_data(waetString, waetStringLen, table, tableSize))
+					{
+						free(table);
+						result = TRUE;
+						goto out;
+					}
+
+					for (DWORD j = 0; j < sizeof(requiredDevices) / sizeof(char*); j++)
+					{
+						if (!find_str_in_data((PBYTE)requiredDevices[j], strlen(requiredDevices[j]), table, tableSize))
+						{
+							free(table);
+							result = TRUE;
+							goto out;
+						}
 					}
 
 					free(table);
 				}
 			}
 		}
-
+out:
 		free(tableNames);
 	}
-	return result;
+	return result || !foundWSMT;
 }
 
 /*

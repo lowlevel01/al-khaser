@@ -216,7 +216,7 @@ int main(int argc, char* argv[])
 		exec_check(&registry_services_disk_enum, TEXT("Checking Services\\Disk\\Enum entries for VM strings "));
 		exec_check(&registry_disk_enum, TEXT("Checking Enum\\IDE and Enum\\SCSI entries for VM strings "));
 		exec_check(&number_SMBIOS_tables, TEXT("Checking SMBIOS tables  "));
-		exec_check(&firmware_ACPI_WAET, TEXT("Checking if ACPI WAET table is present "));
+		exec_check(&firmware_ACPI, TEXT("Checking ACPI table strings "));
 	}
 
 	/* VirtualBox Detection */
