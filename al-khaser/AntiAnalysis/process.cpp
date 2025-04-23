@@ -45,6 +45,18 @@ VOID analysis_tools_process()
 		_T("cheatengine-x86_64-SSE4-AVX2.exe"), // Cheat Engine
 		_T("frida-helper-32.exe"),				// Frida
 		_T("frida-helper-64.exe"),				// Frida
+		_T("ghidra.exe"),						// Ghidra
+		_T("radare2.exe"),						// radare2
+		_T("r2.exe"),							// 
+		_T("cutter.exe"),						// Cutter
+		_T("dnSpy.exe"),						// DnSpy
+		_T("dnSpyEx.exe"),						// 
+		_T("ILSpy.exe"),						// ILSpy
+		_T("HxD.exe"),							// HxD
+		_T("SystemInformer.exe"),				// System Informer
+		_T("DetectItEasy.exe"),					// DIE
+		_T("FakeNet.exe"),						// FakeNet-NG
+		_T("ResourceHacker.exe"),				// Resource editor
 	};
 
 	WORD iLength = sizeof(szProcesses) / sizeof(szProcesses[0]);
